@@ -26,13 +26,14 @@ class yay(ircbot.SingleServerIRCBot):
         url = re.search("(?P<url>https?://[^\s]+)", message)
         if url:
             url = url.group(0)
-            hostname = urlparse.urlparse(url).hostname
             try:
+                hostname = urlparse.urlparse(url).hostname
                 tinyurl = urllib2.urlopen("http://tinyurl.com/api-create.php?url=" + url).read()
                 soup = BeautifulSoup(urllib2.urlopen(url))
-                ret = "Title : %s (%s) | %s" % (soup.title.string[:50], hostname, tinyurl)
+                title = soup.title.string.encode('utf-8')[:50]
+                ret = "Title : %s (%s) | %s" % (title, hostname, tinyurl)
                 serv.privmsg(canal, ret)
-            except IOError:
+            except :
                 return
 
 if __name__ == "__main__":
