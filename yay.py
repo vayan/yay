@@ -2,17 +2,21 @@
 
 import ircbot
 import re
+import sys
 import random
 import urlparse
 import urllib2
 from bs4 import BeautifulSoup
 
-class ippi(ircbot.SingleServerIRCBot):
+server = sys.argv[1]
+channel = sys.argv[2]
+
+class yay(ircbot.SingleServerIRCBot):
     def __init__(self):
-        ircbot.SingleServerIRCBot.__init__(self, [("irc.epitech.net", 6667)], "ippi", "IPPI")
+        ircbot.SingleServerIRCBot.__init__(self, [(server, 6667)], "yay", "yet another yppy")
 
     def on_welcome(self, serv, ev):
-        serv.join("#testvay")
+        serv.join(channel)
 
     def on_pubmsg(self, serv, ev):
         canal = ev.target()
@@ -32,4 +36,4 @@ class ippi(ircbot.SingleServerIRCBot):
                 return
 
 if __name__ == "__main__":
-    ippi().start()
+    yay().start()
