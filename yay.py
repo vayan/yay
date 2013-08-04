@@ -44,7 +44,7 @@ class yay(ircbot.SingleServerIRCBot):
             try:
                 g = Goose()
                 article = g.extract(url=self.lasturl)
-                response = unirest.post("https://textteaser.p.mashape.com/api", {"X-Mashape-Authorization": apikey}, {"text": article.cleaned_text, "title":  article.title})
+                response = unirest.post("http://www.textteaser.com/api", {"Accept": "application/json"}, {"token": apikey, "text": article.cleaned_text, "title":  article.title})
                 for bullet in response.body['sentences']:
                     serv.privmsg(canal, ("* %s" % (bullet).encode('utf-8')))
             except:  # todo log error
