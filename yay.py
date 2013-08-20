@@ -10,8 +10,6 @@ from goose import Goose
 
 server = sys.argv[1]
 channel = sys.argv[2]
-apikey = sys.argv[3]
-
 
 class yay(ircbot.SingleServerIRCBot):
     def __init__(self):
@@ -39,15 +37,18 @@ class yay(ircbot.SingleServerIRCBot):
                 ret = "Title : %s (%s) | %s" % (title, hostname, tinyurl)
                 serv.privmsg(canal, ret)
             except:  # todo log error
+                e = sys.exc_info()[0]
+                print(e)
                 return
         if "!sum" in message:
             try:
-                g = Goose()
-                article = g.extract(url=self.lasturl)
-                response = unirest.post("http://www.textteaser.com/api", {"Accept": "application/json"}, {"token": apikey, "text": article.cleaned_text, "title":  article.title})
-                for bullet in response.body['sentences']:
+                response = unirest.post("http://192.81.222.194:1142/api",{}, {"url": self.lasturl})
+                print response.body
+                for bullet in response.body:
                     serv.privmsg(canal, ("* %s" % (bullet).encode('utf-8')))
             except:  # todo log error
+                e = sys.exc_info()[0]
+                print(e)
                 return
 
 if __name__ == "__main__":
